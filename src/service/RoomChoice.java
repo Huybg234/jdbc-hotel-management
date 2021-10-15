@@ -8,6 +8,7 @@ public class RoomChoice {
     private Room room;
     private int roomQuantity;
     private int dayNumber;
+    private float cost;
 
     public RoomChoice() {
     }
@@ -17,6 +18,14 @@ public class RoomChoice {
         this.room = room;
         this.roomQuantity = roomQuantity;
         this.dayNumber = dayNumber;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
     public Customer getCustomer() {

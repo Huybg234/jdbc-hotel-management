@@ -38,11 +38,20 @@ public class MainRun {
                     sortRoomArrange();
                     break;
                 case 5:
+                    receipt();
+                    break;
                 case 6:
                     System.exit(0);
             }
 
         } while (true);
+    }
+
+    private static void receipt() {
+        for (RoomChoice roomChoice : roomChoices){
+            System.out.println("Thống kê hóa đơn cho khách hàng "+ roomChoice.getCustomer().getName());
+            System.out.println(roomChoice.getCost());
+        }
     }
 
     private static void sortRoomArrange() {
@@ -125,6 +134,7 @@ public class MainRun {
             return false;
         }
         boolean check = true;
+        float cost = 0;
         int roomRest;
         int day = 0;
         System.out.println("Nhập id khách hàng muốn sắp xếp: ");
@@ -177,9 +187,9 @@ public class MainRun {
                 check = false;
             }
         } while (!check);
-        System.out.println(customer);
-        System.out.println(room);
+        cost = customer.getRoomNumberRent() * room.getRentRate() * day;
         RoomChoice roomChoice = new RoomChoice(customer, room, customer.getRoomNumberRent(), day);
+        roomChoice.setCost(cost);
         roomChoices.add(roomChoice);
         roomChoiceDAO.insertNewRoomChoice(roomChoices);
         return true;
