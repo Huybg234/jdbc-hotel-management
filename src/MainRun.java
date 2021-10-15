@@ -35,12 +35,84 @@ public class MainRun {
                     roomArrange();
                     break;
                 case 4:
+                    sortRoomArrange();
+                    break;
                 case 5:
                 case 6:
                     System.exit(0);
             }
 
         } while (true);
+    }
+
+    private static void sortRoomArrange() {
+        boolean check = true;
+        if (roomChoices == null || roomChoices.size() == 0){
+            System.out.println("Bạn cần nhập danh sách xếp phòng cho khách hàng trước khi sắp xếp");
+            return;
+        }
+        do {
+            int sortChoice = 0;
+            System.out.println("---------- SẮP XẾP DANH SÁCH SẮP XẾP PHÒNG ---------");
+            System.out.println("1. Theo loại phòng");
+            System.out.println("2. Theo số phòng cần thuê");
+            System.out.println("3. Thoát chức năng sắp xếp.");
+            System.out.print("Xin mời chọn chức năng: ");
+            do {
+                try {
+                    sortChoice = new Scanner(System.in).nextInt();
+                    check = true;
+                } catch (Exception e) {
+                    System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                    check = false;
+                    continue;
+                }
+                if (sortChoice < 1 || sortChoice > 3) {
+                    System.out.print("Nhập trong khoảng từ 1 đến 3! Nhập lại: ");
+                    check = false;
+                }
+            } while (!check);
+            switch (sortChoice) {
+                case 1:
+                    sortByRoomType();
+                    break;
+                case 2:
+                    sortByRoomNumberRent();
+                    break;
+                case 3:
+                    return;
+            }
+        } while (true);
+    }
+
+    private static void sortByRoomNumberRent() {
+       for (int i=0; i < roomChoices.size() ; i++ ){
+           for (int j=i+1; j < roomChoices.size(); j++){
+               if (roomChoices.get(i).getCustomer().getRoomNumberRent() > roomChoices.get(j).getCustomer().getRoomNumberRent()){
+                   RoomChoice tmp = roomChoices.get(i);
+                   roomChoices.set(i, roomChoices.get(j));
+                   roomChoices.set(j, tmp);
+               }
+           }
+       }
+       for (RoomChoice roomChoice : roomChoices){
+           System.out.println(roomChoice);
+       }
+    }
+
+    private static void sortByRoomType() {
+        for (int i=0; i < roomChoices.size(); i++){
+            for (int j=i+1; j < roomChoices.size(); j++){
+                if (roomChoices.get(i).getRoom().getRoomNumber() > roomChoices.get(j).getRoom().getRoomNumber()){
+                    RoomChoice roomChoice = roomChoices.get(i);
+                    roomChoices.set(i, roomChoices.get(j));
+                    roomChoices.set(j, roomChoice);
+                }
+            }
+        }
+        for (RoomChoice roomChoice : roomChoices){
+            System.out.println(roomChoice);
+        }
     }
 
     public static boolean isValidCustomerAndRoom() {
