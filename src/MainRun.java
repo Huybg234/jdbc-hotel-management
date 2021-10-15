@@ -172,9 +172,9 @@ public class MainRun {
             }
             System.out.print("Không có khách hàng nào có ID vừa nhập, vui lòng nhập lại: ");
         } while (true);
-        System.out.println("Nhập số ngày thuê");
         do {
             try {
+                System.out.println("Nhập số ngày thuê");
                 day = new Scanner(System.in).nextInt();
                 check = true;
             } catch (Exception e) {
