@@ -132,7 +132,20 @@ public class Customer implements Serializable {
             }
         } while (!check);
         System.out.println("Nhập số lượng phòng muốn thuê: ");
-        this.roomNumberRent = new Scanner(System.in).nextInt();
+        do {
+            try {
+                this.roomNumberRent = new Scanner(System.in).nextInt();
+                check = true;
+            } catch (Exception e) {
+                System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                check = false;
+                continue;
+            }
+            if (this.roomNumberRent <= 0 ){
+                System.out.println("Số phòng muốn thuê phải lớn hơn 0! Nhập lại:");
+                check = false;
+            }
+        }while (!check);
         Customer.AUTO_ID++;
     }
 

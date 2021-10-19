@@ -106,9 +106,35 @@ public class Room implements Serializable {
             }
         } while (!check);
         System.out.println("Nhập mức tiền thuê: ");
-        this.rentRate = new Scanner(System.in).nextInt();
+        do {
+            try {
+                this.rentRate = new Scanner(System.in).nextInt();
+                check = true;
+            } catch (Exception e) {
+                System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                check = false;
+                continue;
+            }
+            if (this.rentRate <= 0 ){
+                System.out.println("Giá phòng phải lớn hơn 0! Nhập lại:");
+                check = false;
+            }
+        }while (!check);
         System.out.println("Nhập số phòng: ");
-        this.roomNumber = new Scanner(System.in).nextInt();
+        do {
+            try {
+                this.roomNumber = new Scanner(System.in).nextInt();
+                check = true;
+            } catch (Exception e) {
+                System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                check = false;
+                continue;
+            }
+            if (this.roomNumber <= 0 ){
+                System.out.println("Số phòng phải lớn hơn 0! Nhập lại:");
+                check = false;
+            }
+        }while (!check);
         Room.AUTO_ID++;
     }
 

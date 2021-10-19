@@ -134,63 +134,81 @@ public class MainRun {
             return false;
         }
         boolean check = true;
-        float cost = 0;
-        int roomRest;
-        int day = 0;
-        System.out.println("Nhập id khách hàng muốn sắp xếp: ");
-        int customerId;
-        Room room;
-        Customer customer;
+        int n = 0;
         do {
             try {
-                customerId = new Scanner(System.in).nextInt();
+                System.out.println("Nhập số lượng khách hàng muốn sắp xếp phòng: ");
+                n = new Scanner(System.in).nextInt();
                 check = true;
             } catch (Exception e) {
                 System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
                 check = false;
                 continue;
             }
-            customer = searchCustomer(customerId);
-            int retry = 1;
-            if (customer != null && customer.getId() == customerId) {
-                System.out.println("Loại phòng khách hàng " + customer.getName() + " thuê là: ");
-                System.out.println(customer.getRoomTypeRent());
-                System.out.println("Số phòng loại " + customer.getRoomTypeRent() + " khách hàng muốn thuê là: ");
-                System.out.println(customer.getRoomNumberRent());
-
-                room = searchRoomType(customer.getRoomTypeRent());
-                assert room != null;
-                System.out.println("Số phòng " + room.getRoomType() + " hiện có:");
-                System.out.println(room.getRoomNumber());
-                if (room.getRoomNumber() >= customer.getRoomNumberRent()) {
-                    roomRest = room.getRoomNumber() - customer.getRoomNumberRent();
-                    room.setRoomNumber(roomRest);
-                } else {
-                    return suggestOtherRoom(customer, room, retry);
+            if (n<=0){
+                System.out.println("Số lượng khách hàng phải lớn hơn 0! Nhập lại:");
+                check = false;
+            }
+        }while (!check);
+        for (int i=0; i<n; i++){
+            float cost = 0;
+            int roomRest;
+            int day = 0;
+            System.out.println("Nhập id khách hàng muốn sắp xếp: ");
+            int customerId;
+            Room room;
+            Customer customer;
+            do {
+                try {
+                    customerId = new Scanner(System.in).nextInt();
+                    check = true;
+                } catch (Exception e) {
+                    System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                    check = false;
+                    continue;
                 }
-                break;
-            }
-            System.out.print("Không có khách hàng nào có ID vừa nhập, vui lòng nhập lại: ");
-        } while (true);
-        do {
-            try {
-                System.out.println("Nhập số ngày thuê");
-                day = new Scanner(System.in).nextInt();
-                check = true;
-            } catch (Exception e) {
-                System.out.print("Không được nhập ký tự khác ngoài số! Nhập lại: ");
-                check = false;
-                continue;
-            }
-            if (day <= 0 ) {
-                System.out.print("Số ngày thuê phải lớn hơn 0! Nhập lại: ");
-                check = false;
-            }
-        } while (!check);
-        cost = customer.getRoomNumberRent() * room.getRentRate() * day;
-        RoomChoice roomChoice = new RoomChoice(customer, room, customer.getRoomNumberRent(), day);
-        roomChoice.setCost(cost);
-        roomChoices.add(roomChoice);
+                customer = searchCustomer(customerId);
+                int retry = 1;
+                if (customer != null && customer.getId() == customerId) {
+                    System.out.println("Loại phòng khách hàng " + customer.getName() + " thuê là: ");
+                    System.out.println(customer.getRoomTypeRent());
+                    System.out.println("Số phòng loại " + customer.getRoomTypeRent() + " khách hàng muốn thuê là: ");
+                    System.out.println(customer.getRoomNumberRent());
+
+                    room = searchRoomType(customer.getRoomTypeRent());
+                    assert room != null;
+                    System.out.println("Số phòng " + room.getRoomType() + " hiện có:");
+                    System.out.println(room.getRoomNumber());
+                    if (room.getRoomNumber() >= customer.getRoomNumberRent()) {
+                        roomRest = room.getRoomNumber() - customer.getRoomNumberRent();
+                        room.setRoomNumber(roomRest);
+                    } else {
+                        return suggestOtherRoom(customer, room, retry);
+                    }
+                    break;
+                }
+                System.out.print("Không có khách hàng nào có ID vừa nhập, vui lòng nhập lại: ");
+            } while (true);
+            do {
+                try {
+                    System.out.println("Nhập số ngày thuê");
+                    day = new Scanner(System.in).nextInt();
+                    check = true;
+                } catch (Exception e) {
+                    System.out.print("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                    check = false;
+                    continue;
+                }
+                if (day <= 0 ) {
+                    System.out.print("Số ngày thuê phải lớn hơn 0! Nhập lại: ");
+                    check = false;
+                }
+            } while (!check);
+            cost = customer.getRoomNumberRent() * room.getRentRate() * day;
+            RoomChoice roomChoice = new RoomChoice(customer, room, customer.getRoomNumberRent(), day);
+            roomChoice.setCost(cost);
+            roomChoices.add(roomChoice);
+        }
         roomChoiceDAO.insertNewRoomChoice(roomChoices);
         return true;
     }
@@ -401,14 +419,22 @@ public class MainRun {
         System.out.println("4.Sắp xếp danh sách xếp phòng");
         System.out.println("5.Tính toán hóa đơn cho mỗi khách hàng");
         System.out.println("6.Thoát");
-        int functionChoice;
+        int functionChoice = 0;
+        boolean check = true;
         do {
-            functionChoice = new Scanner(System.in).nextInt();
-            if (functionChoice >= 1 && functionChoice <= 6) {
-                break;
+            try {
+                functionChoice = new Scanner(System.in).nextInt();
+                check = true;
+            } catch (Exception e) {
+                System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
+                check = false;
+                continue;
             }
-            System.out.print("Chức năng chọn không hợp lệ, vui lòng chọn lại: ");
-        } while (true);
+            if (functionChoice < 1 || functionChoice > 6) {
+                System.out.print("Chức năng chọn không hợp lệ, vui lòng chọn lại: ");
+                check = false;
+            }
+        } while (!check);
         return functionChoice;
     }
 }
